@@ -1,0 +1,233 @@
+[
+  {
+    "answer": "Guitar",
+    "svg": {
+      "content": "<svg width='200' height='400' xmlns='http://www.w3.org/2000/svg'> <g id='body'> <path d='M100,350 Q50,200 100,50 Q150,200 100,350' fill='#8b5a2b'/> </g> <g id='strings'> <line x1='100' y1='40' x2='100' y2='350' stroke='grey' stroke-width='1'/> <line x1='95' y1='40' x2='95' y2='350' stroke='grey' stroke-width='1'/> <line x1='105' y1='40' x2='105' y2='350' stroke='grey' stroke-width='1'/> </g> <g id='neck'> <rect x='90' y='30' width='20' height='150' fill='#deb887'/> </g> <g id='headstock'> <rect x='85' y='10' width='30' height='20' fill='#deb887'/> </g> <g id='tuners'> <circle cx='85' cy='20' r='3' fill='black'/> <circle cx='115' cy='20' r='3' fill='black'/> </g> <g id='bridge'> <line x1='75' y1='340' x2='125' y2='340' stroke='black' stroke-width='3'/> </g> <g id='soundhole'> <circle cx='100' cy='250' r='20' stroke='black' fill='white'/> </g> </svg>",
+      "width": 200,
+      "height": 400
+    }
+  }
+,  
+  {
+    "answer": "Floppy Disk",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='disk-body'> <rect x='50' y='50' width='100' height='100' fill='#666666' stroke='black' stroke-width='2'/> </g> <g id='disk-label'> <rect x='60' y='60' width='80' height='20' fill='#888888'/> </g> <g id='write-protect'> <rect x='140' y='90' width='10' height='30' rx='2' ry='2' fill='black'/> </g> <g id='metal-shutter'> <rect x='65' y='125' width='70' height='15' fill='#bbbbbb'/> </g> <g id='shutter-detail'> <line x1='70' y1='130' x2='130' y2='130' stroke='black' stroke-width='1'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+,  
+  {
+    "answer": "Scooter",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='deck'> <rect x='50' y='140' width='100' height='10' fill='blue'/> </g> <g id='wheels'> <circle cx='60' cy='160' r='10' fill='black'/> <circle cx='140' cy='160' r='10' fill='black'/> </g> <g id='handles'> <line x1='75' y1='20' x2='75' y2='80' stroke='blue' stroke-width='5'/> <line x1='65' y1='20' x2='85' y2='20' stroke='blue' stroke-width='5'/> </g> <g id='stem'> <line x1='75' y1='80' x2='75' y2='140' stroke='blue' stroke-width='5'/> </g> <g id='brake-handle'> <line x1='75' y1='30' x2='65' y2='30' stroke='black' stroke-width='3'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+,  
+  {
+    "answer": "Bicycle",
+    "svg": {
+      "content": "<svg width='300' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='frame'> <line x1='60' y1='140' x2='120' y2='100' stroke='black' stroke-width='2'/> <line x1='120' y1='100' x2='180' y2='100' stroke='black' stroke-width='2'/> <line x1='180' y1='100' x2='240' y2='140' stroke='black' stroke-width='2'/> <line x1='120' y1='100' x2='120' y2='140' stroke='black' stroke-width='2'/> <line x1='180' y1='100' x2='180' y2='140' stroke='black' stroke-width='2'/> </g> <g id='wheels'> <circle cx='60' cy='140' r='40' stroke='black' stroke-width='2' fill='none'/> <circle cx='240' cy='140' r='40' stroke='black' stroke-width='2' fill='none'/> </g> <g id='handlebar'> <line x1='75' y1='70' x2='120' y2='100' stroke='black' stroke-width='2'/> <line x1='60' y1='40' x2='75' y2='70' stroke='black' stroke-width='2'/> </g> <g id='saddle'> <line x1='180' y1='80' x2='180' y2='100' stroke='black' stroke-width='2'/> <line x1='170' y1='80' x2='190' y2='80' stroke='black' stroke-width='2'/> </g> <g id='pedals'> <circle cx='180' cy='140' r='5' fill='black'/> <line x1='175' y1='140' x2='165' y2='140' stroke='black' stroke-width='2'/> <line x1='185' y1='140' x2='195' y2='140' stroke='black' stroke-width='2'/> </g> </svg>",
+      "width": 300,
+      "height": 200
+    }
+  }
+,  
+  {
+    "answer": "Corgi",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='body'> <ellipse cx='100' cy='130' rx='40' ry='30' fill='#e69b30'/> </g> <g id='head'> <ellipse cx='100' cy='100' rx='25' ry='20' fill='#e69b30'/> </g> <g id='ears'> <polygon points='80,80 85,70 90,80' fill='#e69b30'/> <polygon points='120,80 115,70 110,80' fill='#e69b30'/> </g> <g id='tail'> <rect x='85' y='140' width='4' height='15' fill='#e69b30' transform='rotate(45 85 140)'/> </g> <g id='legs'> <rect x='75' y='155' width='10' height='20' fill='#e69b30'/> <rect x='115' y='155' width='10' height='20' fill='#e69b30'/> </g> <g id='face-details'> <circle cx='95' cy='100' r='2' fill='black'/> <circle cx='105' cy='100' r='2' fill='black'/> <rect x='98' y='115' width='4' height='2' fill='black'/> </g> <g id='paws'> <ellipse cx='80' cy='177' rx='5' ry='2' fill='white'/> <ellipse cx='120' cy='177' rx='5' ry='2' fill='white'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+,  
+  {
+    "answer": "Diamond Ring",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='ring-band'> <circle cx='100' cy='120' r='30' stroke='gold' stroke-width='8' fill='none'/> </g> <g id='diamond-mount'> <rect x='90' y='100' width='20' height='10' fill='gold'/> </g> <g id='diamond'> <polygon points='100,60 85,85 115,85' fill='lightblue' stroke='blue' stroke-width='2'/> </g> <g id='sparkles'> <line x1='100' y1='70' x2='100' y2='50' stroke='white' stroke-width='2'/> <line x1='95' y1='80' x2='90' y2='90' stroke='white' stroke-width='2'/> <line x1='105' y1='80' x2='110' y2='90' stroke='white' stroke-width='2'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+  
+,  
+  {
+    "answer": "Coffee Cup",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='cup'> <rect x='70' y='80' width='60' height='40' rx='5' ry='5' fill='white' stroke='black'/> </g> <g id='handle'> <path d='M130 100 Q140 90, 140 110 Q140 130, 130 120' fill='white' stroke='black'/> </g> <g id='coffee'> <rect x='75' y='85' width='50' height='30' fill='brown'/> </g> <g id='steam'> <path d='M85 80 Q80 70, 90 60' stroke='grey' stroke-width='2' fill='none'/> <path d='M115 80 Q120 70, 110 60' stroke='grey' stroke-width='2' fill='none'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+,  
+  {
+    "answer": "Candle",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='candle-base'> <rect x='90' y='70' width='20' height='60' fill='#f5deb3'/> </g> <g id='flame'> <path d='M100 60 Q95 50, 100 40 Q105 50, 100 60' fill='orange'/> </g> <g id='wick'> <rect x='98' y='60' width='4' height='10' fill='black'/> </g> <g id='melted-wax'> <path d='M90 70 Q92 75, 88 80 Q90 85, 91 90 Q93 95, 90 100 Q100 100, 110 100 Q107 95, 109 90 Q108 85, 110 80 Q108 75, 110 70' fill='#f5deb3'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+,  
+  {
+    "answer": "Coconut",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='coconut-body'> <circle cx='100' cy='100' r='50' fill='brown' stroke='black' stroke-width='2'/> </g> <g id='coconut-texture'> <path d='M80,100 Q100,80 120,100' stroke='black' stroke-width='1' fill='none'/> <path d='M80,100 Q100,120 120,100' stroke='black' stroke-width='1' fill='none'/> <path d='M90,90 Q100,70 110,90' stroke='black' stroke-width='1' fill='none'/> <path d='M90,110 Q100,130 110,110' stroke='black' stroke-width='1' fill='none'/> </g> <g id='straw'> <line x1='100' y1='50' x2='100' y2='20' stroke='pink' stroke-width='5'/> </g> <g id='coconut-opening'> <ellipse cx='100' cy='60' rx='8' ry='4' fill='white'/> </g></svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+,  
+  {
+    "answer": "Race Car",
+    "svg": {
+      "content": "<svg width='300' height='150' viewBox='0 0 300 150' xmlns='http://www.w3.org/2000/svg'> <g id='car-body'> <rect x='50' y='70' width='200' height='40' rx='20' ry='20' fill='red'/> </g> <g id='wheels'> <circle cx='90' cy='120' r='20' fill='black'/> <circle cx='210' cy='120' r='20' fill='black'/> </g> <g id='wheel-details'> <circle cx='90' cy='120' r='7' fill='silver'/> <circle cx='210' cy='120' r='7' fill='silver'/> </g> <g id='rear-spoiler'> <rect x='230' y='60' width='40' height='10' fill='blue'/> </g> <g id='front-spoiler'> <rect x='40' y='75' width='20' height='10' fill='blue'/> </g> <g id='car-top'> <rect x='100' y='50' width='100' height='20' rx='10' ry='10' fill='blue'/> </g> <g id='racing-stripes'> <rect x='145' y='70' width='10' height='40' fill='white'/> <rect x='145' y='50' width='10' height='20' fill='white'/> </g> <g id='number'> <text x='125' y='100' font-family='Verdana' font-size='20' fill='white'>5</text> </g> </svg>",
+      "width": 300,
+      "height": 150
+    }
+  }
+,  
+  {
+    "answer": "Lion",
+    "svg": {
+      "content": "<svg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'> <g id='outline'> <circle cx='100' cy='100' r='50' stroke='black' stroke-width='2' fill='yellow'/> </g> <g id='mane'> <circle cx='100' cy='100' r='70' stroke='orange' stroke-width='3' fill='none'/> </g> <g id='eyes'> <circle cx='85' cy='90' r='5' stroke='black' stroke-width='1.5' fill='white'/> <circle cx='115' cy='90' r='5' stroke='black' stroke-width='1.5' fill='white'/> <circle cx='85' cy='90' r='2' fill='black'/> <circle cx='115' cy='90' r='2' fill='black'/> </g> <g id='nose'> <polygon points='95,110 105,110 100,115' fill='brown'/> </g> <g id='mouth'> <path d='M95,120 Q100,125 105,120' stroke='brown' stroke-width='1.5' fill='none'/> </g> <g id='ears'> <path d='M75,85 Q70,80 75,75' fill='yellow'/> <path d='M125,85 Q130,80 125,75' fill='yellow'/> </g> <g id='facial-markings'> <line x1='95' y1='100' x2='90' y2='95' stroke='black' stroke-width='1'/> <line x1='105' y1='100' x2='110' y2='95' stroke='black' stroke-width='1'/> <line x1='93' y1='105' x2='88' y2='107' stroke='black' stroke-width='0.5'/> <line x1='107' y1='105' x2='112' y2='107' stroke='black' stroke-width='0.5'/> </g> <g id='mane-detail'> <path d='M85,140 Q100,150 115,140' fill='none' stroke='darkorange' stroke-width='3'/> <path d='M85,60 Q100,50 115,60' fill='none' stroke='darkorange' stroke-width='3'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+,  
+{
+  "answer": "Dollar Bill",
+  "svg": {
+    "content": "<svg width='220' height='100' xmlns='http://www.w3.org/2000/svg'> <g id='body'> <rect x='10' y='10' width='200' height='80' fill='green' stroke='black' stroke-width='2'/> </g> <g id='serial-number'> <text x='20' y='30' fill='white' font-family='monospace' font-size='8'>A12345678B</text> <text x='160' y='30' fill='white' font-family='monospace' font-size='8'>C87654321D</text> </g> <g id='center-shape'> <ellipse cx='110' cy='50' rx='30' ry='15' fill='white'/> </g> <g id='decorations'> <path d='M40,30 Q110,0 180,30' stroke='black' stroke-width='1' fill='none'/> <path d='M40,70 Q110,100 180,70' stroke='black' stroke-width='1' fill='none'/> </g> <g id='dollar-signs'> <text x='100' y='50' font-family='Arial' font-size='14' text-anchor='middle' fill='black'>$</text> <text x='50' y='90' font-family='Arial' font-size='10' text-anchor='middle' fill='black'>ONE DOLLAR</text> </g> </svg>",
+    "width": 220,
+    "height": 100
+  }
+}
+,
+{
+  "answer": "Tomato",
+  "svg": {
+    "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='tomato-body'> <circle cx='100' cy='100' r='60' fill='red'/> </g> <g id='stem'> <rect x='95' y='40' width='10' height='20' fill='brown'/> </g> <g id='leaves'> <ellipse cx='90' cy='45' rx='20' ry='10' fill='green' transform='rotate(-30 90 45)'/> <ellipse cx='110' cy='45' rx='20' ry='10' fill='green' transform='rotate(30 110 45)'/> </g> <g id='shine'> <path d='M75,85 Q70,90 75,95' stroke='white' stroke-width='2' fill='none'/> </g> </svg>",
+    "width": 200,
+    "height": 200
+  }
+}
+,
+  {
+    "answer": "sound speaker",
+    "svg": {
+      "content": "<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='200' height='200'><g fill='none' stroke='#000' stroke-width='2'><!-- Speaker Body --><circle cx='100' cy='100' r='90' fill='#212121'/><circle cx='100' cy='100' r='80' fill='#323232'/><!-- Speaker Grill --><circle cx='100' cy='100' r='60' stroke='#3E3E3E' stroke-width='2' fill='#2B2B2B'/><circle cx='100' cy='100' r='61' stroke='#3E3E3E' stroke-width='1' stroke-dasharray='1,4'/><!-- Speaker Cone --><circle cx='100' cy='100' r='45' fill='#4B4B4B'/><!-- Dust Cap --><circle cx='100' cy='100' r='15' fill='#3E3E3E'/><!-- Rubber Surround --><circle cx='100' cy='100' r='75' fill='none' stroke='#464646'/></g></svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "boombox",
+    "svg": {
+      "content": "<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200' width='300' height='200'><g id='body' fill='#212121'><rect x='25' y='40' width='250' height='120' rx='20' ry='20'/></g><g id='speakers'><circle cx='75' cy='100' r='40' fill='#323232'/><circle cx='225' cy='100' r='40' fill='#323232'/><circle cx='75' cy='100' r='30' stroke='#3E3E3E' stroke-width='2' fill='#2B2B2B'/><circle cx='225' cy='100' r='30' stroke='#3E3E3E' stroke-width='2' fill='#2B2B2B'/><circle cx='75' cy='100' r='20' fill='#4B4B4B'/><circle cx='225' cy='100' r='20' fill='#4B4B4B'/><circle cx='75' cy='100' r='7' fill='#3E3E3E'/><circle cx='225' cy='100' r='7' fill='#3E3E3E'/><circle cx='75' cy='100' r='35' fill='none' stroke='#464646'/><circle cx='225' cy='100' r='35' fill='none' stroke='#464646'/></g><g id='buttons' fill='#323232'><rect x='130' y='70' width='40' height='20' rx='5' fill='#4B4B4B'/><circle cx='150' cy='80' r='5'/><path d='M 130,85 l 15,0 l -5,10 l -5,-10 z' fill='#212121'/><rect x='130' y='110' width='40' height='20' rx='5' fill='#4B4B4B'/><rect x='140' y='115' width='20' height='10' rx='2' fill='#212121'/></g></svg>",
+      "width": 300,
+      "height": 200
+    }
+  },
+  {
+    "answer": "building",
+    "svg": {
+      "content": "<svg width=\"200\" height=\"220\" xmlns=\"http://www.w3.org/2000/svg\"> <rect x=\"20\" y=\"20\" width=\"160\" height=\"200\" fill=\"#8c8c89\"/> <rect x=\"40\" y=\"40\" width=\"40\" height=\"40\" fill=\"#ffffff\"/> <rect x=\"120\" y=\"40\" width=\"40\" height=\"40\" fill=\"#ffffff\"/> <rect x=\"40\" y=\"100\" width=\"40\" height=\"40\" fill=\"#ffffff\"/> <rect x=\"120\" y=\"100\" width=\"40\" height=\"40\" fill=\"#ffffff\"/> <rect x=\"40\" y=\"160\" width=\"40\" height=\"40\" fill=\"#ffffff\"/> <rect x=\"120\" y=\"160\" width=\"40\" height=\"40\" fill=\"#ffffff\"/> <path d=\"M0 30 L20 20 L20 220\" fill=\"#7a7a78\"/> <path d=\"M200 30 L180 20 L180 220\" fill=\"#7a7a78\"/> <rect x=\"85\" y=\"30\" width=\"30\" height=\"10\" fill=\"#ffffff\"/> </svg>",
+      "width": 200,
+      "height": 220
+    }
+  },
+  {
+    "answer": "chair",
+    "svg": {
+      "content": "<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' width='200' height='200'><g><!-- Legs --><rect x='50' y='150' width='10' height='50' fill='#8B4513'/><rect x='140' y='150' width='10' height='50' fill='#8B4513'/><rect x='50' y='100' width='10' height='10' fill='#8B4513' transform='skewX(45)'/><rect x='140' y='100' width='10' height='10' fill='#8B4513' transform='skewX(-45)'/></g><g><!-- Seat --><rect x='40' y='100' width='120' height='10' fill='#A0522D'/></g><g><!-- Backrest --><rect x='40' y='50' width='120' height='50' fill='#DEB887'/><line x1='50' y1='50' x2='50' y2='100' stroke='#8B4513' stroke-width='5'/><line x1='100' y1='50' x2='100' y2='100' stroke='#8B4513' stroke-width='5'/><line x1='150' y1='50' x2='150' y2='100' stroke='#8B4513' stroke-width='5'/></g><!-- Supporting bars --><rect x='60' y='125' width='80' height='5' fill='#8B4513'/><rect x='60' y='135' width='80' height='5' fill='#8B4513'/></g></svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "wooden chair",
+    "svg": {
+      "content": "<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='200px' height='200px' viewBox='0 0 200 200' version='1.1'><g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'><g transform='translate(2.000000, 2.000000)' fill='#B69A84'><path d='M30,50 L70,50 L70,20 L80,20 L80,50 L120,50 L120,80 L30,80 L30,50 Z M120,20 L150,0 L160,0 L130,20 L120,20 Z M100,160 L110,160 L140,140 L140,130 L100,130 L100,160 Z M90,160 L90,130 L50,130 L50,140 L80,160 L90,160 Z' fill-opacity='0.6'/><path d='M13,14 L25,12 L25,8 L13,10 L13,14 Z M25,8 L35,7 L45,8 L45,12 L35,13 L25,12 L25,8 Z M45,8 L57,10 L57,14 L45,12 L45,8 Z M13,18 L25,16 L35,17 L45,18 L45,22 L35,23 L25,22 L13,20 L13,18 Z M108,74 L128,74 L128,80 L108,80 L108,74 Z' fill-opacity='0.8'/><path d='M30,20 L120,20 L120,50 L30,50 L30,20 Z M60,115 L60,130 L100,130 L100,115 L60,115 Z M30,80 L120,80 L120,160 L30,160 L30,80 Z M35,160 L35,130 L45,130 L45,160 L35,160 Z M55,160 L55,130 L65,130 L65,160 L55,160 Z M75,160 L75,130 L85,130 L85,160 L75,160 Z M95,160 L95,130 L105,130 L105,160 L95,160 Z M115,160 L115,130 L125,130 L125,160 L115,160 Z' id='Chair'/></g></g></svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "cat",
+    "svg": {
+      "content": "<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none' width='200' height='200'><g fill='#999999'><ellipse cx='50' cy='135' rx='15' ry='7' /><!-- Rear leg far --><ellipse cx='150' cy='135' rx='15' ry='7' transform='rotate(-10 150,135)' /><!-- Front leg far --></g><g fill='#666666'><ellipse cx='60' cy='140' rx='20' ry='10' /><!-- Rear leg near --><ellipse cx='145' cy='140' rx='20' ry='10' transform='rotate(-10 145,140)' /><!-- Front leg near --></g><g fill='#333333'><!-- Body --><path d='M30,130 q30,-60 100,0 q20,30 60,5 q0,10 -5,15 q-35,25 -65,-5 q-45,25 -90,0 z' /></g><g fill='#FFFFFF'><!-- Body white markings --><path d='M35,130 q30,-50 95,0 q0,6 -5,4 q-35,20 -65,-4 q-15,15 -25,0 z' /></g><g fill='#FFD700'><!-- Eyes --><circle cx='70' cy='70' r='5' /><circle cx='130' cy='70' r='5' /></g><g fill='#FFFFFF'><!-- Whiskers and muzzle --><ellipse cx='100' cy='100' rx='20' ry='10' /><path d='M90,95 h20 m-18,5 h16 m-22,-10 h26' stroke='#ffffff' stroke-width='2' /></g><g fill='#000000'><!-- Nose and mouth --><polygon points='98,100 102,100 100,104' /><path d='M100,104 q-7,5 -7,0 m14,0 q7,5 7,0' stroke='#000000' stroke-width='1.5' /></g><g fill='#FF4500'><!-- Collar --><rect x='80' y='85' width='40' height='5' /></g><g fill='#333333'><!-- Tail --><path d='M30,135 q0,-30 30,-30 q30,5 50,30 q2,5 -3,5 q-20,-20 -47,-25 q-27,2 -30,25 z' /></g><g><!-- Extra details --><ellipse cx='100' cy='100' rx='3' ry='7' fill='#8B4513' transform='rotate(45 100,100)' /><circle cx='70' cy='80' r='2' fill='#8B4513' /><circle cx='130' cy='80' r='2' fill='#8B4513' /></g></svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "sailboat",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <!-- Background --> <rect width='100%' height='100%' fill='#ade8f4'/> <!-- Water --> <g id='water'> <path d='M 0,150 Q 25,140 50,150 T 100,150 T 150,150 T 200,150' fill='transparent' stroke='#0077b6' stroke-width='5'/> <path d='M 0,160 Q 25,170 50,160 T 100,160 T 150,160 T 200,160' fill='transparent' stroke='#023e8a' stroke-width='5'/> </g> <!-- Boat Hull --> <g id='hull'> <rect x='80' y='120' width='40' height='30' fill='#03045e'/> </g> <!-- Main Sail --> <g id='main-sail'> <polygon points='98,90 120,120 80,120' fill='#00b4d8'/> </g> <!-- Front Sail --> <g id='front-sail'> <polygon points='70,100 80,120 50,120' fill='#90e0ef'/> </g> <!-- Mast --> <g id='mast'> <rect x='97' y='70' width='6' height='50' fill='#000'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "birthday cake",
+    "svg": {
+      "content": "<svg width='200' height='220' xmlns='http://www.w3.org/2000/svg'> <!-- Background --> <rect width='100%' height='100%' fill='#f0e6f7'/> <!-- Cake Stand --> <g id='stand'> <ellipse cx='100' cy='200' rx='60' ry='10' fill='#e1d5e7'/> <rect x='80' y='190' width='40' height='10' fill='#c0b1c7'/> </g> <!-- First Layer --> <g id='first-layer'> <rect x='40' y='150' width='120' height='40' rx='10' fill='#ffd3b6'/> </g> <!-- Second Layer --> <g id='second-layer'> <rect x='50' y='110' width='100' height='40' rx='10' fill='#ffaaa5'/> </g> <!-- Third Layer --> <g id='third-layer'> <rect x='60' y='70' width='80' height='40' rx='10' fill='#ff8b94'/> </g> <!-- Candles --> <g id='candles'> <rect x='85' y='50' width='10' height='20' fill='#fff'/> <rect x='105' y='50' width='10' height='20' fill='#fff'/> <circle cx='90' cy='50' r='5' fill='yellow'/> <circle cx='110' cy='50' r='5' fill='yellow'/> </g> <!-- Details --> <g id='details'> <line x1='50' y1='150' x2='160' y2='150' stroke='#e1d5e7' stroke-width='5'/> <line x1='60' y1='110' x2='150' y2='110' stroke='#e1d5e7' stroke-width='5'/> <line x1='70' y1='70' x2='140' y2='70' stroke='#e1d5e7' stroke-width='5'/> </g> </svg>",
+      "width": 200,
+      "height": 220
+    }
+  },
+  {
+    "answer": "sun",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <!-- Background --> <rect width='100%' height='100%' fill='#f9c74f'/> <!-- Sun --> <g id='sun'> <circle cx='100' cy='100' r='50' fill='#f94144'/> </g> <!-- Sun Rays --> <g id='sun-rays'> <path d='M 100,50 Q 100,0 100,50' fill='transparent' stroke='#f9c74f' stroke-width='5'/> <path d='M 150,100 Q 200,100 150,100' fill='transparent' stroke='#f9c74f' stroke-width='5'/> <path d='M 100,150 Q 100 200 100 150' fill='transparent' stroke='#f9c74f' stroke-width='5'/> <path d='M 50,100 Q 0,100 50,100' fill='transparent' stroke='#f9c74f' stroke-width='5'/> <path d='M 125,75 Q 175,25 125,75' fill='transparent' stroke='#f9c74f' stroke-width='5'/> <path d='M 75,125 Q 25,175 75,125' fill='transparent' stroke='#f9c74f' stroke-width='5'/> <path d='M 125,125 Q 175,175 125,125' fill='transparent' stroke='#f9c74f' stroke-width='5'/> <path d='M 75,75 Q 25,25 75,75' fill='transparent' stroke='#f9c74f' stroke-width='5'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "flower",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <!-- Background --> <rect width='100%' height='100%' fill='#f9c74f'/> <!-- Stem --> <g id='stem'> <rect x='95' y='100' width='10' height='100' fill='#90be6d'/> </g> <!-- Leaves --> <g id='leaves'> <path d='M 100,150 Q 80,130 100,110 Q 120,130 100,150' fill='#90be6d'/> <path d='M 100,130 Q 80,110 100,90 Q 120,110 100,130' fill='#90be6d'/> </g> <!-- Flower Head --> <g id='flower-head'> <circle cx='100' cy='50' r='40' fill='#f94144'/> </g> <!-- Petals --> <g id='petals'> <path d='M 100,10 Q 80,30 100,50 Q 120,30 100,10' fill='#f9c74f'/> <path d='M 60,50 Q 80,30 100,50 Q 120,30 140,50 Q 120,70 100,90 Q 80,70 60,50' fill='#f9c74f'/> <path d='M 100,90 Q 80,70 100,50 Q 120,70 100,90' fill='#f9c74f'/> <path d='M 140,50 Q 120,70 100,50 Q 80,70 60,50 Q 80,30 100,10 Q 120,30 140,50' fill='#f9c74f'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "rainbow",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <!-- Background --> <rect width='100%' height='100%' fill='#f9c74f'/> <!-- Rainbow --> <g id='rainbow'> <path d='M 0,100 Q 50,50 100,100 T 200,100' fill='transparent' stroke='#f94144' stroke-width='20'/> <path d='M 0,110 Q 50,60 100,110 T 200,110' fill='transparent' stroke='#f3722c' stroke-width='20'/> <path d='M 0,120 Q 50,70 100,120 T 200,120' fill='transparent' stroke='#f8961e' stroke-width='20'/> <path d='M 0,130 Q 50,80 100,130 T 200,130' fill='transparent' stroke='#f9c74f' stroke-width='20'/> <path d='M 0,140 Q 50,90 100,140 T 200,140' fill='transparent' stroke='#90be6d' stroke-width='20'/> <path d='M 0,150 Q 50,100 100,150 T 200,150' fill='transparent' stroke='#43aa8b' stroke-width='20'/> <path d='M 0,160 Q 50,110 100,160 T 200,160' fill='transparent' stroke='#577590' stroke-width='20'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "tree",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <!-- Background --> <rect width='100%' height='100%' fill='#f9c74f'/> <!-- Tree Trunk --> <g id='trunk'> <rect x='95' y='100' width='10' height='100' fill='#8b5d2e'/> </g> <!-- Tree Leaves --> <g id='leaves'> <circle cx='100' cy='50' r='40' fill='#90be6d'/> <circle cx='80' cy='70' r='40' fill='#90be6d'/> <circle cx='120' cy='70' r='40' fill='#90be6d'/> <circle cx='100' cy='90' r='40' fill='#90be6d'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  },
+  {
+    "answer": "Castle",
+    "svg": {
+      "content": "<svg width='300' height='200' xmlns='http://www.w3.org/2000/svg'> <g id='main-body'> <rect x='50' y='100' width='200' height='100' fill='grey'/> </g> <g id='towers'> <rect x='40' y='50' width='40' height='150' fill='grey'/> <rect x='220' y='50' width='40' height='150' fill='grey'/> </g> <g id='battlements'> <rect x='40' y='40' width='10' height='20' fill='grey'/> <rect x='70' y='40' width='10' height='20' fill='grey'/> <rect x='220' y='40' width='10' height='20' fill='grey'/> <rect x='250' y='40' width='10' height='20' fill='grey'/> </g> <g id='gates'> <rect x='125' y='150' width='50' height='50' fill='saddlebrown'/> <line x1='125' y1='150' x2='175' y2='200' stroke='saddlebrown' stroke-width='3'/> <line x1='175' y1='150' x2='125' y2='200' stroke='saddlebrown' stroke-width='3'/> </g> <g id='windows'> <circle cx='60' cy='75' r='5' fill='black'/> <circle cx='260' cy='75' r='5' fill='black'/> </g> <g id='flag'> <line x1='250' y1='30' x2='250' y2='10' stroke='black' stroke-width='2'/> <rect x='250' y='10' width='20' height='10' fill='red'/> </g> </svg>",
+      "width": 300,
+      "height": 200
+    }
+  }
+  ,
+  {
+    "answer": "school bus",
+    "svg": {
+      "content": "<svg width='200' height='200' xmlns='http://www.w3.org/2000/svg'> <!-- Background --> <rect width='100%' height='100%' fill='#f9c74f'/> <!-- Bus Body --> <g id='body'> <rect x='50' y='80' width='100' height='40' fill='#f94144'/> </g> <!-- Bus Windows --> <g id='windows'> <rect x='60' y='85' width='20' height='30' fill='#fff'/> <rect x='85' y='85' width='20' height='30' fill='#fff'/> <rect x='110' y='85' width='20' height='30' fill='#fff'/> </g> <!-- Bus Wheels --> <g id='wheels'> <circle cx='70' cy='120' r='10' fill='#000'/> <circle cx='130' cy='120' r='10' fill='#000'/> </g> </svg>",
+      "width": 200,
+      "height": 200
+    }
+  }
+]
