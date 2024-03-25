@@ -13,7 +13,7 @@ interface ObjectData {
   svg: SVG;
 }
 
-const DEFAULT_DURATION = 60;
+const DEFAULT_DURATION = 25;
 
 const ObjectRenderer: React.FC = () => {
   const [objects, setObjects] = useState<ObjectData[]>([]);

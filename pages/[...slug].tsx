@@ -138,6 +138,10 @@ const Room: NextPage = () => {
     const { slug } = router.query
     const slugRoomId = Array.isArray(slug) ? slug[0] : undefined
 
+    console.log(slug)
+    console.log(slugRoomId)
+    console.log(roomId)
+
     if (!roomId) {
       // roomId is undefined when user first attempts to join a room
 
@@ -153,6 +157,8 @@ const Room: NextPage = () => {
         .on(REALTIME_LISTEN_TYPES.PRESENCE, { event: REALTIME_PRESENCE_LISTEN_EVENTS.SYNC }, () => {
           let newRoomId
           const state = roomChannel.presenceState()
+
+          console.log(state)
 
           // User attempting to navigate directly to an existing room with users
           if (slugRoomId && slugRoomId in state && state[slugRoomId].length < MAX_ROOM_USERS) {
@@ -170,7 +176,9 @@ const Room: NextPage = () => {
           }
 
           // Generate an id if no existing rooms are available
-          setRoomId(newRoomId ?? nanoid())
+          const room = newRoomId || nanoid()
+          console.log(room)
+          setRoomId(room)
         })
         .subscribe()
     } else {
@@ -295,6 +303,7 @@ const Room: NextPage = () => {
           room_id: string
         }>
       ) => {
+        console.log(payload)
         if (payload.new.user_id === userId && insertMsgTimestampRef.current) {
           sendLog(
             `Message Latency for User ${userId} from insert to receive was ${(
@@ -364,6 +373,7 @@ const Room: NextPage = () => {
       REALTIME_LISTEN_TYPES.BROADCAST,
       { event: 'MESSAGE' },
       (payload: Payload<{ user_id: string; isTyping: boolean; message: string }>) => {
+        console.log(payload)
         setUsers((users) => {
           const userId = payload!.payload!.user_id
           const existingUser = users[userId]
