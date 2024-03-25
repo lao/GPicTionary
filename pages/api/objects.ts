@@ -14,13 +14,18 @@ interface ObjectData {
   svg: SVG;
 }
 
-const jsonDirectory = path.join(process.cwd(), 'pages/api');
-const fileContents = fs.readFile(jsonDirectory + '/objects.json', 'utf8');
 let results;
+
+// const loadResults = async () => {
+
+// }/
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ObjectData[]>) {
   try {
-    results ||= await fileContents.then((data) => {console.log(data); return data;} );
+    const jsonDirectory = path.join(process.cwd(), 'pages/api');
+    const fileContents = fs.readFile(jsonDirectory + '/objects.json', 'utf8');
+    results = await fileContents.then((data) => {console.log(data); return data;} );
     const objects: ObjectData[] = JSON.parse(results);
 
     res.status(200).json(objects);

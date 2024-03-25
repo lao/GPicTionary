@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import SVGAnimator from '../components/SVGAnimator';
+import AnimationTimeline from '../components/AnimationTimeline';
 
 interface SVG {
   content: string;
@@ -11,9 +13,14 @@ interface ObjectData {
   svg: SVG;
 }
 
+const DEFAULT_DURATION = 60;
+
 const ObjectRenderer: React.FC = () => {
   const [objects, setObjects] = useState<ObjectData[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showPaths, setShowPaths] = useState<boolean[]>([]);
+  const [shouldReset, setShouldReset] = useState(false);
+  const [duration, setDuration] = useState(DEFAULT_DURATION);
 
   useEffect(() => {
     const fetchObjects = async () => {
@@ -21,6 +28,7 @@ const ObjectRenderer: React.FC = () => {
         const response = await fetch('/api/objects');
         const data: ObjectData[] = await response.json();
         setObjects(data);
+        setShowPaths(data.map(() => false)); // Initialize showPaths array to all false
       } catch (error) {
         console.error('Error fetching objects:', error);
       }
@@ -29,12 +37,33 @@ const ObjectRenderer: React.FC = () => {
     fetchObjects();
   }, []);
 
+  useEffect(() => {
+    if (objects.length > 0) {
+      const timer = setTimeout(() => {
+        const newShowPaths = [...showPaths];
+        const randomIndex = Math.floor(Math.random() * newShowPaths.length);
+        newShowPaths[randomIndex] = true;
+        setShowPaths(newShowPaths);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [objects, showPaths]);
+
   const showPrevObject = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + objects.length) % objects.length);
+    setShowPaths(objects.map(() => false)); // Reset showPaths when switching objects
+    setDuration(DEFAULT_DURATION);
+    setShouldReset(true);
+    setTimeout(() => setShouldReset(false), 0);
   };
 
   const showNextObject = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % objects.length);
+    setShowPaths(objects.map(() => false)); // Reset showPaths when switching objects
+    setDuration(DEFAULT_DURATION);
+    setShouldReset(true);
+    setTimeout(() => setShouldReset(false), 0);
   };
 
   if (objects.length === 0) {
@@ -47,7 +76,10 @@ const ObjectRenderer: React.FC = () => {
     <div className="container">
       <div className="object-container">
         <h2>{currentObject.answer}</h2>
-        <div dangerouslySetInnerHTML={{ __html: currentObject.svg.content }} />
+        <div>
+          <SVGAnimator svgContent={currentObject.svg.content} duration={duration}/>
+          <AnimationTimeline duration={duration} reset={shouldReset}/>
+        </div>
       </div>
       <div className="navigation">
         <button onClick={showPrevObject}>Previous</button>
@@ -90,3 +122,5 @@ const ObjectRenderer: React.FC = () => {
 };
 
 export default ObjectRenderer;
+
+
