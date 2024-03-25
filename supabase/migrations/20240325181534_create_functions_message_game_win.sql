@@ -32,8 +32,8 @@ DECLARE
   turn_answer TEXT;
   player_id UUID;
 BEGIN
-  turn_answer := SELECT word_id FROM public.turns WHERE id = turn_id;
-  turn_answer := SELECT word FROM public.words WHERE id = turn_answer;
+  SELECT word_id INTO turn_answer FROM public.turns WHERE id = turn_id;
+  SELECT word INTO turn_answer FROM public.words WHERE id = turn_answer;
   
   IF turn_answer = message THEN
     player_id := public.get_player_id(game_id, user_id);
@@ -41,7 +41,7 @@ BEGIN
     UPDATE public.players SET score = score + 1 WHERE game_id = game_id AND user_id = user_id;
   END IF;
 END;
-
+$$ LANGUAGE plpgsql;
 
 -- create trigger for after insert
 CREATE OR REPLACE FUNCTION public.after_insert_verify_message_in_game_answer()
@@ -51,13 +51,13 @@ DECLARE
   turn_id UUID;
   turn_answer TEXT;
 BEGIN
-  id := SELECT g.id from public.games g WHERE g.slug = NEW.room_id;
+  SELECT g.id INTO id FROM public.games g WHERE g.slug = NEW.room_id;
 
   IF id IS NOT NULL THEN
     turn_id := public.get_turn_of_game(id);
     
     IF turn_id IS NOT NULL THEN
-      public.verify_message_in_game_answer(NEW.message, NEW.user_id, id, turn_id);
+      PERFORM verify_message_in_game_answer(NEW.message, NEW.user_id, id, turn_id);
     END IF;
   END IF;
 END;
