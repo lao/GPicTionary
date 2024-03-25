@@ -7,11 +7,10 @@ create table profiles (
 );
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/auth/row-level-security for more details.
-alter table profiles
-  enable row level security;
+alter table profiles enable row level security;
 
 create policy "Public profiles are viewable by own profile." on profiles
-  for select to authenticated using (auth.uid() = id);
+  for select using (auth.uid() = id);
 
 create policy "Users can insert their own profile." on profiles
   for insert with check (auth.uid() = id);
@@ -29,6 +28,7 @@ begin
   return new;
 end;
 $$ language plpgsql security definer;
+
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
