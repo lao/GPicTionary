@@ -3,9 +3,7 @@ create table profiles (
   id uuid references auth.users on delete cascade not null primary key,
   updated_at timestamp with time zone,
   full_name text,
-  avatar_url text,
-
-  constraint username_length check (char_length(username) >= 3)
+  avatar_url text
 );
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/auth/row-level-security for more details.

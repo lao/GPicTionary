@@ -3,7 +3,7 @@ CREATE TYPE turn_status AS ENUM ('waiting', 'in_progress', 'finished');
 CREATE TABLE turns (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     game_id UUID REFERENCES games(id),
-    winner_id UUID REFERENCES users(id),
+    winner_id UUID REFERENCES auth.users,
     word_id UUID REFERENCES words(id),
     start_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     end_time TIMESTAMP WITH TIME ZONE,

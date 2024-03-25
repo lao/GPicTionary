@@ -3,11 +3,11 @@ CREATE TYPE game_status AS ENUM ('waiting', 'in_progress', 'finished');
 
 CREATE TABLE games (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    host_id UUID REFERENCES users(id),
+    host_id UUID REFERENCES auth.users,
     status game_status DEFAULT 'waiting',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     finished_at TIMESTAMP WITH TIME ZONE,
-    winner_id UUID REFERENCES users(id)
+    winner_id UUID REFERENCES auth.users
 );
 
 ALTER TABLE games ENABLE ROW LEVEL SECURITY;

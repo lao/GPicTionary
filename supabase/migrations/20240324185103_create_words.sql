@@ -10,7 +10,7 @@ ALTER TABLE words ENABLE ROW LEVEL SECURITY;
 CREATE POLICY select_words ON words FOR SELECT USING (false);
 
 -- nobody can insert words
-CREATE POLICY insert_words ON words FOR INSERT USING (false);
+CREATE POLICY insert_words ON words FOR INSERT WITH CHECK (false);
 
 -- nobody can update words
 CREATE POLICY update_words ON words FOR UPDATE USING (false);
