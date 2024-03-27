@@ -28,6 +28,8 @@ import Loader from '../components/Loader'
 import Users from '../components/Users'
 import WaitlistPopover from '../components/WaitlistPopover'
 import DarkModeToggle from '../components/DarkModeToggle'
+import SVGAnimator from '../components/SVGAnimator'
+import AnimationTimeline from '../components/AnimationTimeline'
 
 const LATENCY_THRESHOLD = 400
 const MAX_ROOM_USERS = 50
@@ -37,9 +39,22 @@ const X_THRESHOLD = 25
 const Y_THRESHOLD = 35
 
 // Generate a random user id
-const userId = nanoid()
+const _userId = nanoid()
 
 const Room: NextPage = () => {
+  const [userId, setUserId] = useState<string>(_userId)
+  const userIdRef = useRef<string>(_userId)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      userIdRef.current = window.prompt('Enter a user name', userIdRef.current) || ''
+      setUserId(userIdRef.current)
+      if (!userIdRef.current) {
+        window.location.reload()
+      }   
+    }
+  }, [])
+
   const router = useRouter()
 
   const localColorBackup = getRandomColor()
@@ -73,6 +88,10 @@ const Room: NextPage = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [roomId, setRoomId] = useState<undefined | string>(undefined)
   const [users, setUsers] = useState<{ [key: string]: User }>({})
+
+  const [isTurnInProgress, setIsTurnInProgress] = useState<boolean>(false)
+  const [turnData, setTurnData] = useState<any>({})
+  const [shouldReset, setShouldReset] = useState<boolean>(false)
 
   const setIsTyping = (value: boolean) => {
     isTypingRef.current = value
@@ -131,6 +150,8 @@ const Room: NextPage = () => {
       })
     }
   }
+
+
 
   useEffect(() => {
     let roomChannel: RealtimeChannel
@@ -240,13 +261,77 @@ const Room: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomId])
 
+  const handleNewTurn = (newTurn: any) => {
+    console.log(newTurn)
+    const { word_id: wordId } = newTurn
+    console.log(wordId)
+    supabaseClient
+      .from('words')
+      .select('*')
+      .eq('id', wordId)
+      .then((resp: any) => {
+        console.log(resp)
+        // return resp.data[0].svg
+        if (resp.error || !resp.data) {
+          console.error('Error fetching word:', resp.error)
+          return
+        }
+        
+        if (resp.data.length > 0) {
+          setIsTurnInProgress(true)
+          setTurnData(resp.data?.[0])
+        }
+      })
+  }
+
+  const loadTurns = async (gameSlug: string) => {
+    const game = await supabaseClient
+      .from('games')
+      .select('id')
+      .eq('slug', gameSlug)
+      .single()
+    
+    if (game.error || !game.data) {
+      console.error('Error fetching game:', game.error)
+      return
+    }
+
+    const turns = await supabaseClient
+      .from('turns')
+      .select('*')
+      .eq('game_id', game.data.id)
+      .eq('status', 'in_progress')
+      .order('turn_order', { ascending: true })
+
+    if (turns.error || !turns.data) {
+      console.error('Error fetching turns:', turns.error)
+      return
+    }
+
+    if (turns.data.length > 0) {
+      handleNewTurn(turns.data?.[0])
+    }
+
+    return turns.data
+  }
+
+  const handleFinishTurn = (turnData: any) => {
+    setShouldReset(true);
+    setTimeout(() => setShouldReset(false), 0);
+    setIsTurnInProgress(false)
+    setTurnData({})
+  }
+
+
   useEffect(() => {
     if (!roomId || !isInitialStateSynced) return
 
+    loadTurns(roomId)
+
     let pingIntervalId: ReturnType<typeof setInterval> | undefined
     let messageChannel: RealtimeChannel, pingChannel: RealtimeChannel
-    let setMouseEvent: (e: MouseEvent) => void = () => {},
-      onKeyDown: (e: KeyboardEvent) => void = () => {}
+    let setMouseEvent: (e: MouseEvent) => void = () => { },
+      onKeyDown: (e: KeyboardEvent) => void = () => { }
 
     // Ping channel is used to calculate roundtrip time from client to server to client
     pingChannel = supabaseClient.channel(`ping:${userId}`, {
@@ -372,8 +457,19 @@ const Room: NextPage = () => {
     messageChannel.on(
       REALTIME_LISTEN_TYPES.BROADCAST,
       { event: 'MESSAGE' },
-      (payload: Payload<{ user_id: string; isTyping: boolean; message: string }>) => {
+      (payload: Payload<{ user_id: string; isTyping: boolean; message: string; status: string; data:any; }>) => {
         console.log(payload)
+        
+        if (payload!.payload!.status === 'in_progress') {
+          handleNewTurn(payload!.payload!.data)
+          return
+        }
+
+        if (payload!.payload!.status === 'finished') {
+          handleFinishTurn(payload!.payload!.data)
+          return
+        }
+
         setUsers((users) => {
           const userId = payload!.payload!.user_id
           const existingUser = users[userId]
@@ -400,7 +496,7 @@ const Room: NextPage = () => {
               event: 'POS',
               payload: { user_id: userId, x, y },
             })
-            .catch(() => {})
+            .catch(() => { })
         }, 1000 / MAX_EVENTS_PER_SECOND)
 
         setMouseEvent = (e: MouseEvent) => {
@@ -430,7 +526,7 @@ const Room: NextPage = () => {
                   event: 'MESSAGE',
                   payload: { user_id: userId, isTyping: true, message: '' },
                 })
-                .catch(() => {})
+                .catch(() => { })
             } else if (e.code === 'Enter') {
               // End typing session and send message
               setIsTyping(false)
@@ -440,7 +536,7 @@ const Room: NextPage = () => {
                   event: 'MESSAGE',
                   payload: { user_id: userId, isTyping: false, message: messageRef.current },
                 })
-                .catch(() => {})
+                .catch(() => { })
               if (messageRef.current) {
                 const updatedMessagesInTransit = (messagesInTransitRef?.current ?? []).concat([
                   messageRef.current,
@@ -471,7 +567,7 @@ const Room: NextPage = () => {
                 event: 'MESSAGE',
                 payload: { user_id: userId, isTyping: false, message: '' },
               })
-              .catch(() => {})
+              .catch(() => { })
           }
         }
 
@@ -534,7 +630,7 @@ const Room: NextPage = () => {
         </div>
       </div>
 
-      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center space-x-2 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full h-20 flex items-center justify-center space-x-2 pointer-events-none">
         <div className="flex items-center justify-center space-x-2 border border-scale-1200 rounded-md px-3 py-2 opacity-20">
           <p className="text-scale-1200 cursor-default text-sm">Chat</p>
           <code className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center">
@@ -547,6 +643,30 @@ const Room: NextPage = () => {
             ESC
           </code>
         </div>
+      </div>
+
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center space-x-2 pointer-events-none">
+        {
+          isTurnInProgress && (
+            <div className="flex flex-col items-center justify-center space-x-2 border border-scale-1200 rounded-md px-3 py-2">
+              <p className="text-scale-1200 cursor-default text-sm">
+                Turn in Progress
+              </p>
+              <code className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center">
+                {
+                  turnData?.word?.split(' ').map((word: string, index: number) => (
+                    <span key={index} className="text-xs">
+                      {new Array(word.length).fill(' _ ').join('')}
+                      {index < turnData.word.split(' ').length - 1 ? '/' : ''}
+                    </span>
+                  ))
+                }
+              </code>
+              <SVGAnimator svgContent={turnData.svg} duration={8}/>
+              <AnimationTimeline duration={25} reset={shouldReset}/>
+            </div>
+          )
+        }
       </div>
 
       {Object.entries(users).reduce((acc, [userId, data]) => {
