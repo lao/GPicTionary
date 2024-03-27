@@ -1,40 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GPicTionary - Pictionary game assisted by GPT
 
-## Getting Started
+This game was quickly POCed and developed for an AllHands presentation at [Woflow](https://www.woflow.com/). By quickly POCed I mean it was just [eXtreme Go-Horse process](https://gist.github.com/banaslee/4147370)
 
-First, run the development server:
+## Install Nodejs dependencies
+  
+  ```bash
+  npm install
+  ```
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Copy .env.example to .env and fill in the required environment variables
+  
+  ```bash
+  cp .env.example .env
+  ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  You will need to fill the following environment variables, 
+  which you can get by either running `supabase` locally or 
+  by going to your project settings in the Supabase dashboard:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  ```
+  NEXT_PUBLIC_SUPABASE_URL=
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=
+  ```
 
 
+## Getting Started with NextJS server
 
-FROM:
+  First, run the development server:
+  ```bash
+  npm run dev
+  ```
 
-https://www.youtube.com/watch?v=9N66JBRLNYU&ab_channel=Supabase
+# Project Structure
+  ![structure](gpictionary.svg)
+
+# Credits
+  - Project was bootstrapped from supabase [realtime example]( https://github.com/supabase/realtime/tree/main/demo):
+
+# Learnings
+  - GPT can be nice, but specific purpose models can be better, for example: https://github.com/ximinng/SVGDreamer
+  - Streaming data with supabase: https://www.youtube.com/watch?v=9N66JBRLNYU
+  - Nextjs App Router: https://nextjs.org/docs/app/building-your-application/routing
+  - Embeddings 101: https://youtu.be/Yhtjd7yGGGA?t=821
+  - PGVector: https://github.com/pgvector/pgvector
+
