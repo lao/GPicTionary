@@ -10,15 +10,15 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- create function that retrieve player_id or insert player and return player_id
-CREATE OR REPLACE FUNCTION public.get_player_id(player_game_id UUID, user_id TEXT)
+CREATE OR REPLACE FUNCTION public.get_player_id(player_game_id UUID, user_name TEXT)
 RETURNS UUID AS $$
 DECLARE
   player_id UUID;
 BEGIN
-  SELECT p.id INTO player_id FROM public.players p WHERE p.game_id = player_game_id AND p.user_id = user_id;
+  SELECT p.id INTO player_id FROM public.players p WHERE p.game_id = player_game_id AND p.user_id = user_name;
   
   IF player_id IS NULL THEN
-    INSERT INTO public.players (game_id, user_id) VALUES (player_game_id, user_id) RETURNING id INTO player_id;
+    INSERT INTO public.players (game_id, user_id) VALUES (player_game_id, user_name) RETURNING id INTO player_id;
   END IF;
   
   RETURN player_id;
@@ -37,19 +37,20 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION public.verify_message_in_game_answer(message TEXT, user_id TEXT, player_game_id UUID, turn_id UUID)
 RETURNS VOID AS $$
 DECLARE
+  word_i UUID;
   turn_answer TEXT;
   player_id UUID;
   r_status turn_status;
 BEGIN
-  SELECT t.word_id INTO turn_answer FROM public.turns t WHERE t.id = turn_id;
-  SELECT w.word INTO turn_answer FROM public.words w WHERE w.id = turn_answer;
+  SELECT t.word_id INTO word_i FROM public.turns t WHERE t.id = turn_id;
+  SELECT w.word INTO turn_answer FROM public.words w WHERE w.id = word_i;
   SELECT t.status INTO r_status FROM public.turns t WHERE t.id = turn_id;
+
+  player_id := public.get_player_id(player_game_id, user_id);
   
   IF lower(turn_answer) = lower(message) AND r_status = 'in_progress' THEN
-    player_id := public.get_player_id(player_game_id, user_id);  -- game_id here refers to the game_id parameter of verify_message_in_game_answer
-
-    UPDATE public.players p SET p.score = p.score + 1 WHERE p.game_id = player_game_id AND p.user_id = user_id;
-    PERFORM public.update_turn_status(turn_id);
+    UPDATE public.players SET score = score + 1 WHERE game_id = player_game_id AND id = player_id;
+    -- PERFORM public.update_turn_status(turn_id);
   END IF;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
