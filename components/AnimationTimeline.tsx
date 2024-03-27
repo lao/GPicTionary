@@ -34,7 +34,7 @@ const AnimationTimeline: React.FC<AnimationTimelineProps> = ({ duration, reset }
           }
           secondsLeftRef.current = duration * (1 - progressRef.current);
           if (timelineRef.current?.children[1]) {
-            timelineRef.current.children[1].textContent = `${secondsLeftRef.current.toFixed(1)}s`;
+            timelineRef.current.children[1].textContent = `${secondsLeftRef.current.toFixed()}s`;
           }
         },
         onComplete: () => {
