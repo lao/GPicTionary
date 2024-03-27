@@ -9,6 +9,7 @@ CREATE TABLE turns (
     start_time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     end_time TIMESTAMP WITH TIME ZONE,
     status turn_status DEFAULT 'waiting',
+    turn_order INT,
     
     is_tie_breaker BOOLEAN DEFAULT FALSE,
     tie_break_participants UUID[] DEFAULT '{}'
