@@ -2,7 +2,10 @@ CREATE TABLE words (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     word TEXT NOT NULL,
     difficulty TEXT,
-    svg TEXT
+    svg TEXT,
+    height INT,
+    width INT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 ALTER TABLE words ENABLE ROW LEVEL SECURITY;
 
