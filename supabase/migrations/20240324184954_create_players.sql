@@ -4,6 +4,7 @@ CREATE TABLE players (
     -- user_id UUID REFERENCES auth.users,
     user_id TEXT NOT NULL,
     score INTEGER DEFAULT 0,
+    last_scored_turn_id UUID,
     is_drawing BOOLEAN DEFAULT FALSE,
     joined_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
     -- nickname TEXT UNIQUE NOT NULL

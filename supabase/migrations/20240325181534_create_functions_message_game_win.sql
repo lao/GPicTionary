@@ -49,7 +49,12 @@ BEGIN
   player_id := public.get_player_id(player_game_id, user_id);
   
   IF lower(turn_answer) = lower(message) AND r_status = 'in_progress' THEN
-    UPDATE public.players SET score = score + 1 WHERE game_id = player_game_id AND id = player_id;
+    UPDATE public.players 
+    SET score = score + 1, 
+        last_scored_turn_id = turn_id
+    WHERE game_id = player_game_id 
+    AND id = player_id
+    AND (last_scored_turn_id IS NULL OR last_scored_turn_id != turn_id);
     -- PERFORM public.update_turn_status(turn_id);
   END IF;
 END;
