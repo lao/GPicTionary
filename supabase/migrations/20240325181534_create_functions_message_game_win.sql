@@ -1,47 +1,58 @@
--- create function to return turn of game_id
-CREATE OR REPLACE FUNCTION public.get_turn_of_game(game_id UUID)
+
+CREATE OR REPLACE FUNCTION public.get_turn_of_game(player_game_id UUID)
 RETURNS UUID AS $$
 DECLARE
   turn_id UUID;
 BEGIN
-  SELECT id INTO turn_id FROM public.turns WHERE game_id = game_id AND status = 'in_progress';
+  SELECT t.id INTO turn_id FROM public.turns t WHERE t.game_id = player_game_id AND t.status = 'in_progress';
   RETURN turn_id;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- create function that retrieve player_id or insert player and return player_id
-CREATE OR REPLACE FUNCTION public.get_player_id(game_id UUID, user_id TEXT)
+CREATE OR REPLACE FUNCTION public.get_player_id(player_game_id UUID, user_id TEXT)
 RETURNS UUID AS $$
 DECLARE
   player_id UUID;
 BEGIN
-  SELECT id INTO player_id FROM public.players WHERE game_id = game_id AND user_id = user_id;
+  SELECT p.id INTO player_id FROM public.players p WHERE p.game_id = player_game_id AND p.user_id = user_id;
   
   IF player_id IS NULL THEN
-    INSERT INTO public.players (game_id, user_id) VALUES (game_id, user_id) RETURNING id INTO player_id;
+    INSERT INTO public.players (game_id, user_id) VALUES (player_game_id, user_id) RETURNING id INTO player_id;
   END IF;
   
   RETURN player_id;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- create a function that will update turn status to finished
+CREATE OR REPLACE FUNCTION public.update_turn_status(turn_id UUID)
+RETURNS VOID AS $$
+BEGIN
+  UPDATE public.turns t SET t.status = 'finished' WHERE t.id = turn_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- create function to verify message in game answer and update player score (creates player if not exists)
-CREATE OR REPLACE FUNCTION public.verify_message_in_game_answer(message TEXT, user_id TEXT, game_id UUID, turn_id UUID)
+CREATE OR REPLACE FUNCTION public.verify_message_in_game_answer(message TEXT, user_id TEXT, player_game_id UUID, turn_id UUID)
 RETURNS VOID AS $$
 DECLARE
   turn_answer TEXT;
   player_id UUID;
+  r_status turn_status;
 BEGIN
-  SELECT word_id INTO turn_answer FROM public.turns WHERE id = turn_id;
-  SELECT word INTO turn_answer FROM public.words WHERE id = turn_answer;
+  SELECT t.word_id INTO turn_answer FROM public.turns t WHERE t.id = turn_id;
+  SELECT w.word INTO turn_answer FROM public.words w WHERE w.id = turn_answer;
+  SELECT t.status INTO r_status FROM public.turns t WHERE t.id = turn_id;
   
-  IF turn_answer = message THEN
-    player_id := public.get_player_id(game_id, user_id);
+  IF lower(turn_answer) = lower(message) AND r_status = 'in_progress' THEN
+    player_id := public.get_player_id(player_game_id, user_id);  -- game_id here refers to the game_id parameter of verify_message_in_game_answer
 
-    UPDATE public.players SET score = score + 1 WHERE game_id = game_id AND user_id = user_id;
+    UPDATE public.players p SET p.score = p.score + 1 WHERE p.game_id = player_game_id AND p.user_id = user_id;
+    PERFORM public.update_turn_status(turn_id);
   END IF;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- create trigger for after insert
 CREATE OR REPLACE FUNCTION public.after_insert_verify_message_in_game_answer()
@@ -60,13 +71,13 @@ BEGIN
       PERFORM verify_message_in_game_answer(NEW.message, NEW.user_id, id, turn_id);
     END IF;
   END IF;
-END;
-$$ LANGUAGE plpgsql;
 
-CREATE TRIGGER after_insert_verify_message_in_game_answer
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER after_insert_verify_message_in_game_answer
   AFTER INSERT ON public.messages
   FOR EACH ROW
   EXECUTE FUNCTION public.after_insert_verify_message_in_game_answer();
 COMMENT ON TRIGGER after_insert_verify_message_in_game_answer ON public.messages IS 'Verify that the game exists before inserting a message';
-
-
