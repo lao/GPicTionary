@@ -1,7 +1,7 @@
 
 -- Turn on security
 alter table public.messages
-enable row level security;
+disable row level security;
 
 -- Allow anonymous access
 create policy "Allow anonymous access" on public.messages

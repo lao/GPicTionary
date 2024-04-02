@@ -13,7 +13,7 @@ CREATE TABLE games (
     winner_id TEXT
 );
 
-ALTER TABLE games ENABLE ROW LEVEL SECURITY;
+ALTER TABLE games disable row level security;
 
 -- Anyone can read, insert, update, or delete games
 CREATE POLICY select_games ON games FOR SELECT USING (true);

@@ -7,7 +7,7 @@ create table profiles (
 );
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/auth/row-level-security for more details.
-alter table profiles enable row level security;
+alter table profiles disable row level security;
 
 create policy "Public profiles are viewable by own profile." on profiles
   for select using (auth.uid() = id);

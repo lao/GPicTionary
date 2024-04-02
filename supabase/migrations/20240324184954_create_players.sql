@@ -10,4 +10,4 @@ CREATE TABLE players (
     -- nickname TEXT UNIQUE NOT NULL
 );
 
-ALTER TABLE players ENABLE ROW LEVEL SECURITY;
+ALTER TABLE players disable row level security;

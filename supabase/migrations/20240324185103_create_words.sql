@@ -7,7 +7,7 @@ CREATE TABLE words (
     width INT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-ALTER TABLE words ENABLE ROW LEVEL SECURITY;
+ALTER TABLE words disable row level security;
 
 -- nobody can read words
 CREATE POLICY select_words ON words FOR SELECT USING (false);

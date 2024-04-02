@@ -15,7 +15,7 @@ CREATE TABLE turns (
     tie_break_participants UUID[] DEFAULT '{}'
 );
 
-ALTER TABLE turns ENABLE ROW LEVEL SECURITY;
+ALTER TABLE turns disable row level security;
 
 -- allow anyone to read, insert, update, or delete turns
 CREATE POLICY select_turns ON turns FOR SELECT USING (true);
