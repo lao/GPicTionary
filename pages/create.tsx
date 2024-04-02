@@ -10,12 +10,12 @@ import {
 } from '@supabase/supabase-js'
 import supabaseClient from '../client'
 
-// Generate a random user id
+// TODO: replace this with auth Generate a random user id
 const userId = nanoid()
 
 const log = (...args: any[]) => {
   if (process.env.NODE_ENV === 'production') return
-  log(...args)
+  console.log(...args)
 }
 
 const Room: NextPage = () => {
