@@ -2,8 +2,6 @@ import { useEffect, useState, useRef } from 'react'
 import type { NextPage } from 'next'
 import { nanoid } from 'nanoid'
 import {
-  REALTIME_LISTEN_TYPES,
-  REALTIME_PRESENCE_LISTEN_EVENTS,
   REALTIME_SUBSCRIBE_STATES,
   RealtimeChannel,
   RealtimeChannelSendResponse,
@@ -50,6 +48,7 @@ const Room: NextPage = () => {
     if (action === 'in_progress') {
       messageChannel = supabaseClient.channel(`chat_messages:${roomSlug}`)
 
+      //TODO: event types maybe
       messageChannel
         .send({
           type: 'broadcast',
@@ -62,6 +61,7 @@ const Room: NextPage = () => {
     if (action === 'finished') {
       messageChannel = supabaseClient.channel(`chat_messages:${roomSlug}`)
 
+      //TODO: event types maybe
       messageChannel
         .send({
           type: 'broadcast',
@@ -135,6 +135,7 @@ const Room: NextPage = () => {
     let random = nanoid()
 
     // roomId is undefined when user first attempts to join a room
+    // TODO: replace this
     const slugRoomId = window.prompt('Enter a room ID', random) || ''
     joinTimestampRef.current = performance.now()
 
@@ -200,15 +201,6 @@ const Room: NextPage = () => {
                 }}
               >
                 Start
-              </button>
-
-              <button
-                className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center"
-                onClick={() => {
-                  updateTurn(turn.id, 'waiting', turn)
-                }}
-              >
-                Waiting
               </button>
 
               <button
