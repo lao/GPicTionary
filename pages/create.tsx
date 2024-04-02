@@ -1,8 +1,6 @@
-import { useEffect, useState, useRef, ReactElement, Fragment } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import { nanoid } from 'nanoid'
-import { Badge } from '@supabase/ui'
 import {
   REALTIME_LISTEN_TYPES,
   REALTIME_PRESENCE_LISTEN_EVENTS,
@@ -11,34 +9,22 @@ import {
   RealtimeChannelSendResponse,
 } from '@supabase/supabase-js'
 import supabaseClient from '../client'
-import { Coordinates, Message, Payload, User } from '../types'
-import { getRandomColor, getRandomColors, getRandomUniqueColor } from '../lib/RandomColor'
-
-import Chatbox from '../components/Chatbox'
-import Cursor from '../components/Cursor'
-import Loader from '../components/Loader'
-import Users from '../components/Users'
-import WaitlistPopover from '../components/WaitlistPopover'
-import DarkModeToggle from '../components/DarkModeToggle'
 
 // Generate a random user id
 const userId = nanoid()
+
+const log = (...args: any[]) => {
+  if (process.env.NODE_ENV === 'production') return
+  log(...args)
+}
 
 const Room: NextPage = () => {
   let roomChannel: RealtimeChannel;
   let messageChannel: RealtimeChannel, pingChannel: RealtimeChannel;
 
-  const chatboxRef = useRef<any>()
   const joinTimestampRef = useRef<number>()
-  const [messagesInTransit, _setMessagesInTransit] = useState<string[]>([])
-
-  const [areMessagesFetched, setAreMessagesFetched] = useState<boolean>(false)
-  const [isInitialStateSynced, setIsInitialStateSynced] = useState<boolean>(false)
   const [gameCreated, setGameCreated] = useState<boolean>(false)
-  const [latency, setLatency] = useState<number>(0)
-  const [messages, setMessages] = useState<Message[]>([])
   const [roomSlug, setRoomSlug] = useState<undefined | string>(undefined)
-  const [users, setUsers] = useState<{ [key: string]: User }>({})
   const [turns, setTurns] = useState<any[]>([])
   const [gameId, setGameId] = useState<string>('')
 
@@ -46,18 +32,18 @@ const Room: NextPage = () => {
     const { data, error } = await supabaseClient.rpc('start_game', { slug: roomId, host_id: userId })
 
     if (error) {
-      console.error(error)
+      log(error)
       return
     }
 
-    console.log(data)
+    log(data)
     return data;
   }
 
   const updateTurn = async (turnId: string, action: string, turn: any) => {
     const { data, error } = await supabaseClient.from('turns').update({ status: action }).eq('id', turnId)
     if (error) {
-      console.error(error)
+      log(error)
       return
     }
 
@@ -85,30 +71,21 @@ const Room: NextPage = () => {
         .catch(() => { })
     }
     await loadTurns(gameId)
-    console.log(data)
+    log(data)
     return data;
   }
 
 
   const startListeners = (roomId: string) => {
     roomChannel = supabaseClient.channel('rooms', { config: { presence: { key: roomId } } })
-    roomChannel.on(
-      REALTIME_LISTEN_TYPES.PRESENCE,
-      { event: REALTIME_PRESENCE_LISTEN_EVENTS.SYNC },
-      () => {
-        setIsInitialStateSynced(true)
-        // mapInitialUsers(roomChannel, roomId)
-      }
-    )
     roomChannel.subscribe(async (status: `${REALTIME_SUBSCRIBE_STATES}`) => {
       if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
         const resp: RealtimeChannelSendResponse = await roomChannel.track({ user_id: userId })
 
-        console.log('Subscribed to room:', roomId)
-        console.log(resp)
+        log('Subscribed to room:', roomId)
+        log(resp)
       }
     })
-
   }
 
   const loadTurns = async (gamedId: string) => {
@@ -119,11 +96,11 @@ const Room: NextPage = () => {
     const { data, error } = result
 
     if (error) {
-      console.error(error)
+      log(error)
       return
     }
 
-    console.log(data)
+    log(data)
 
     const promises = data.map(async (turn: any) => {
         const { word_id: wordId } = turn
@@ -136,7 +113,7 @@ const Room: NextPage = () => {
         const { data, error } = result
 
         if (error) {
-          console.error(error)
+          log(error)
           return
         }
 
@@ -147,8 +124,7 @@ const Room: NextPage = () => {
       }
     )
     const turns = await Promise.all(promises)
-    console.log(turns)
-
+    log(turns)
 
     setTurns(turns as any[])
     return turns;
@@ -173,7 +149,7 @@ const Room: NextPage = () => {
           })
       }
       ).catch((error) => {
-        console.error(error)
+        log(error)
       })
 
     // Must properly remove subscribed channel
@@ -200,17 +176,9 @@ const Room: NextPage = () => {
               {roomSlug}
             </code>
           </div>
-          {/* add line separator */}
           <div className="w-1 h-5 bg-scale-1200 "></div>
-          <div className="flex items-center justify-center space-x-2 border border-scale-1200 rounded-md px-3 py-2 ">
-            <p className="text-scale-1200 cursor-default text-sm">Latency</p>
-            <code className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center">
-              {latency}
-            </code>
-          </div>
         </div>
         <div className="absolute top-30 right-0 p-4">
-          {/* Add a list  */}
           <br />
           {turns.map(({turn, word}, index) => {
             return <div 
@@ -225,12 +193,10 @@ const Room: NextPage = () => {
               </code>
               <div className="w-1 h-5 bg-scale-1200 "></div>
 
-              {/* add action buttons */}
               <button
                 className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center"
                 onClick={() => {
                   updateTurn(turn.id, 'in_progress', turn)
-                  // 'waiting', 'in_progress', 'finished'
                 }}
               >
                 Start
@@ -240,7 +206,6 @@ const Room: NextPage = () => {
                 className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center"
                 onClick={() => {
                   updateTurn(turn.id, 'waiting', turn)
-                  // 'waiting', 'in_progress', 'finished'
                 }}
               >
                 Waiting
@@ -250,12 +215,10 @@ const Room: NextPage = () => {
                 className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center"
                 onClick={() => {
                   updateTurn(turn.id, 'finished', turn)
-                  // 'waiting', 'in_progress', 'finished'
                 }}
               >
                 Finish
               </button>
-
             </div>
           }
           )}
