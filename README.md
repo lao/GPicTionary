@@ -44,3 +44,10 @@ This game was quickly POCed and developed for an AllHands presentation at [Woflo
   - Embeddings 101: https://youtu.be/Yhtjd7yGGGA?t=821
   - PGVector: https://github.com/pgvector/pgvector
 
+# TODO:
+  - [ ] Add a transition between turns
+  - [ ] Add a way to create a new game and dynamically create turns
+  - [ ] Add a way to generate new drawing during a turn creation
+  - [ ] Add authentication
+  - [ ] Show results at the end of the game
+  - [ ] Add end game button
