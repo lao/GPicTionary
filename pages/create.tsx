@@ -25,7 +25,8 @@ import {
   PlusIcon, 
   PlayIcon, 
   CheckIcon, 
-  SpinnerIcon 
+  SpinnerIcon,
+  ImageIcon
 } from '../components/ui/icons';
 import supabaseClient from '../client';
 
@@ -39,6 +40,8 @@ const Room = () => {
   const [gameId, setGameId] = useState('');
   const [isAddingTurn, setIsAddingTurn] = useState(false);
   const [newTurnWord, setNewTurnWord] = useState('');
+  const [selectedSvg, setSelectedSvg] = useState('');
+  const [isSvgModalOpen, setIsSvgModalOpen] = useState(false);
   
   let roomChannel: RealtimeChannel | undefined;
   let messageChannel: RealtimeChannel | undefined;
@@ -254,6 +257,18 @@ const Room = () => {
                         <p className="text-gray-500">{word.word}</p>
                       </div>
                       <div className="flex space-x-2">
+                      <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            setSelectedSvg(word.svg);
+                            setIsSvgModalOpen(true);
+                          }}
+                          className="flex items-center"
+                        >
+                          <ImageIcon />
+                          <span className="ml-1">View</span>
+                        </Button>
                         <Button
                           size="sm"
                           variant={turn.status === 'in_progress' ? 'default' : 'outline'}
@@ -311,6 +326,17 @@ const Room = () => {
           </Card>
         </div>
       )}
+      <Dialog open={isSvgModalOpen} onOpenChange={setIsSvgModalOpen}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Word Preview</DialogTitle>
+              </DialogHeader>
+              <div 
+                className="w-full h-full flex items-center justify-center p-4"
+                dangerouslySetInnerHTML={{ __html: selectedSvg }}
+              />
+            </DialogContent>
+          </Dialog>
     </div>
   );
 };
