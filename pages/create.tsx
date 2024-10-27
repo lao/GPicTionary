@@ -1,223 +1,318 @@
-import { useEffect, useState, useRef } from 'react'
-import type { NextPage } from 'next'
-import { nanoid } from 'nanoid'
+import { useEffect, useState } from 'react';
+import { nanoid } from 'nanoid';
 import {
   REALTIME_SUBSCRIBE_STATES,
   RealtimeChannel,
   RealtimeChannelSendResponse,
-} from '@supabase/supabase-js'
-import supabaseClient from '../client'
+} from '@supabase/supabase-js';
+import { 
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter 
+} from '../components/ui/card';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger 
+} from '../components/ui/dialog';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { 
+  PlusIcon, 
+  PlayIcon, 
+  CheckIcon, 
+  SpinnerIcon 
+} from '../components/ui/icons';
+import supabaseClient from '../client';
 
-// TODO: replace this with auth Generate a random user id
-const userId = nanoid()
+const userId = nanoid();
 
-const log = (...args: any[]) => {
-  if (process.env.NODE_ENV === 'production') return
-  console.log(...args)
-}
+const Room = () => {
+  const [isCreatingRoom, setIsCreatingRoom] = useState(false);
+  const [roomId, setRoomId] = useState('');
+  const [gameCreated, setGameCreated] = useState(false);
+  const [turns, setTurns] = useState<any[]>([]);
+  const [gameId, setGameId] = useState('');
+  const [isAddingTurn, setIsAddingTurn] = useState(false);
+  const [newTurnWord, setNewTurnWord] = useState('');
+  
+  let roomChannel: RealtimeChannel | undefined;
+  let messageChannel: RealtimeChannel | undefined;
 
-const Room: NextPage = () => {
-  let roomChannel: RealtimeChannel;
-  let messageChannel: RealtimeChannel, pingChannel: RealtimeChannel;
-
-  const joinTimestampRef = useRef<number>()
-  const [gameCreated, setGameCreated] = useState<boolean>(false)
-  const [roomSlug, setRoomSlug] = useState<undefined | string>(undefined)
-  const [turns, setTurns] = useState<any[]>([])
-  const [gameId, setGameId] = useState<string>('')
+  const generateRoomId = () => {
+    const newId = nanoid(8).toLowerCase();
+    setRoomId(newId);
+  };
 
   const startGame = async (roomId: string) => {
-    const { data, error } = await supabaseClient.rpc('start_game', { slug: roomId, host_id: userId })
+    const { data, error } = await supabaseClient.rpc('start_game', { 
+      slug: roomId, 
+      host_id: userId 
+    });
 
     if (error) {
-      log(error)
-      return
+      console.error(error);
+      return;
     }
 
-    log(data)
     return data;
-  }
+  };
 
   const updateTurn = async (turnId: string, action: string, turn: any) => {
-    const { data, error } = await supabaseClient.from('turns').update({ status: action }).eq('id', turnId)
+    const { error } = await supabaseClient
+      .from('turns')
+      .update({ status: action })
+      .eq('id', turnId);
+
     if (error) {
-      log(error)
-      return
+      console.error(error);
+      return;
     }
 
-    if (action === 'in_progress') {
-      messageChannel = supabaseClient.channel(`chat_messages:${roomSlug}`)
+    messageChannel = supabaseClient.channel(`chat_messages:${roomId}`);
+    messageChannel
+      .send({
+        type: 'broadcast',
+        event: 'MESSAGE',
+        payload: { status: action, data: turn },
+      })
+      .catch(console.error);
 
-      //TODO: event types maybe
-      messageChannel
-        .send({
-          type: 'broadcast',
-          event: 'MESSAGE',
-          payload: { status: 'in_progress', data: turn },
-        })
-        .catch(() => { })
+    await loadTurns(gameId);
+  };
+
+  const addNewTurn = async () => {
+    if (!newTurnWord.trim()) return;
+
+    const { data: wordData, error: wordError } = await supabaseClient
+      .from('words')
+      .insert([{ word: newTurnWord }])
+      .select()
+      .single();
+
+    if (wordError) {
+      console.error(wordError);
+      return;
     }
 
-    if (action === 'finished') {
-      messageChannel = supabaseClient.channel(`chat_messages:${roomSlug}`)
+    const { error: turnError } = await supabaseClient
+      .from('turns')
+      .insert([{
+        game_id: gameId,
+        word_id: wordData.id,
+        turn_order: turns.length + 1,
+        status: 'pending'
+      }]);
 
-      //TODO: event types maybe
-      messageChannel
-        .send({
-          type: 'broadcast',
-          event: 'MESSAGE',
-          payload: { status: 'finished', data: turn },
-        })
-        .catch(() => { })
+    if (turnError) {
+      console.error(turnError);
+      return;
     }
-    await loadTurns(gameId)
-    log(data)
-    return data;
-  }
 
+    setNewTurnWord('');
+    setIsAddingTurn(false);
+    await loadTurns(gameId);
+  };
 
   const startListeners = (roomId: string) => {
-    roomChannel = supabaseClient.channel('rooms', { config: { presence: { key: roomId } } })
-    roomChannel.subscribe(async (status: `${REALTIME_SUBSCRIBE_STATES}`) => {
+    roomChannel = supabaseClient.channel('rooms', { 
+      config: { presence: { key: roomId } } 
+    });
+    
+    roomChannel?.subscribe(async (status: `${REALTIME_SUBSCRIBE_STATES}`) => {
       if (status === REALTIME_SUBSCRIBE_STATES.SUBSCRIBED) {
-        const resp: RealtimeChannelSendResponse = await roomChannel.track({ user_id: userId })
-
-        log('Subscribed to room:', roomId)
-        log(resp)
+        await roomChannel?.track({ user_id: userId });
       }
-    })
-  }
+    });
+  };
 
-  const loadTurns = async (gamedId: string) => {
-    const result = await supabaseClient.from('turns')
-                                       .select('*')
-                                       .eq('game_id', gamedId)
-                                       .order('turn_order', { ascending: true })
-    const { data, error } = result
+  const loadTurns = async (gameId: string) => {
+    const { data: turnsData, error: turnsError } = await supabaseClient
+      .from('turns')
+      .select('*')
+      .eq('game_id', gameId)
+      .order('turn_order', { ascending: true });
 
-    if (error) {
-      log(error)
-      return
+    if (turnsError) {
+      console.error(turnsError);
+      return;
     }
 
-    log(data)
+    const promises = turnsData.map(async (turn: any) => {
+      const { data: wordData, error: wordError } = await supabaseClient
+        .from('words')
+        .select('*')
+        .eq('id', turn.word_id)
+        .single();
 
-    const promises = data.map(async (turn: any) => {
-        const { word_id: wordId } = turn
-        const result = await supabaseClient
-          .from('words')
-          .select('*')
-          .eq('id', wordId)
-          .single()
-
-        const { data, error } = result
-
-        if (error) {
-          log(error)
-          return
-        }
-
-        return {
-          turn,
-          word: data,
-        }
+      if (wordError) {
+        console.error(wordError);
+        return;
       }
-    )
-    const turns = await Promise.all(promises)
-    log(turns)
 
-    setTurns(turns as any[])
+      return {
+        turn,
+        word: wordData,
+      };
+    });
+
+    const turns = await Promise.all(promises);
+    setTurns(turns);
     return turns;
-  }
+  };
 
-  useEffect(() => {
-    let roomChannel: RealtimeChannel
-    let random = nanoid()
-
-    // roomId is undefined when user first attempts to join a room
-    // TODO: replace this
-    const slugRoomId = window.prompt('Enter a room ID', random) || ''
-    joinTimestampRef.current = performance.now()
-
-    startGame(slugRoomId)
-      .then((data) => {
-        setGameId(data)
-        startListeners(slugRoomId)
-        loadTurns(data)
-          .then(() => {
-            setGameCreated(true)
-            setRoomSlug(slugRoomId)
-          })
-      }
-      ).catch((error) => {
-        log(error)
-      })
-
-    // Must properly remove subscribed channel
-    return () => {
-      roomChannel && supabaseClient.removeChannel(roomChannel)
+  const createRoom = async () => {
+    if (!roomId.trim()) return;
+    
+    setIsCreatingRoom(true);
+    
+    try {
+      const gameId = await startGame(roomId);
+      setGameId(gameId);
+      startListeners(roomId);
+      await loadTurns(gameId);
+      setGameCreated(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsCreatingRoom(false);
     }
+  };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return <div>
-    <div className="bg-scale-200 h-60 w-screen flex flex-col items-center justify-center space-y-4">
-      <span className="flex h-5 w-5 relative">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-900 opacity-75" />
-        <span className="relative inline-flex rounded-full h-full w-full bg-green-900" />
-      </span>
-    </div>
-    {
-      gameCreated && <div>
-        <div className="absolute top-30 left-0 w-full h-3 flex items-center justify-center space-x-2 pointer-events-none">
-          <div className="flex items-center justify-center space-x-2 border border-scale-1200 rounded-md px-3 py-2 ">
-            <p className="text-scale-1200 cursor-default text-sm">Room ID</p>
-            <code className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center">
-              {roomSlug}
-            </code>
-          </div>
-          <div className="w-1 h-5 bg-scale-1200 "></div>
-        </div>
-        <div className="absolute top-30 right-0 p-4">
-          <br />
-          {turns.map(({turn, word}, index) => {
-            return <div 
-              key={index}
-              className="flex items-center justify-center space-x-2 border border-scale-1200 rounded-md px-3 py-2 mt-2"
-              style={{ borderColor: turn.status === 'in_progress' ? 'green' : turn.status === 'finished' ? 'blue' : 'red' }}
-            >
-              <p className="text-scale-1200 cursor-default text-sm">Turn {index + 1}</p>
-              <code className="bg-scale-1100 text-scale-100 px-1 h-40 rounded flex items-center justify-center">
-                {JSON.stringify(turn)}
-                {word.word}
-              </code>
-              <div className="w-1 h-5 bg-scale-1200 "></div>
-
-              <button
-                className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center"
-                onClick={() => {
-                  updateTurn(turn.id, 'in_progress', turn)
-                }}
-              >
-                Start
-              </button>
-
-              <button
-                className="bg-scale-1100 text-scale-100 px-1 h-6 rounded flex items-center justify-center"
-                onClick={() => {
-                  updateTurn(turn.id, 'finished', turn)
-                }}
-              >
-                Finish
-              </button>
+  return (
+    <div className="min-h-screen bg-gray-50 p-8">
+      {!gameCreated ? (
+        <Card className="max-w-md mx-auto">
+          <CardHeader>
+            <CardTitle>Create New Room</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Room ID</label>
+                <div className="flex space-x-2">
+                  <Input
+                    type="text"
+                    placeholder="Enter room ID"
+                    value={roomId}
+                    onChange={(e) => setRoomId(e.target.value.toLowerCase())}
+                    className="flex-1"
+                  />
+                  <Button 
+                    variant="outline" 
+                    onClick={generateRoomId}
+                    className="whitespace-nowrap"
+                  >
+                    Generate ID
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-500 mt-1">
+                  This ID will be used to join the room later
+                </p>
+              </div>
             </div>
-          }
-          )}
+          </CardContent>
+          <CardFooter>
+            <Button 
+              onClick={createRoom}
+              disabled={isCreatingRoom || !roomId.trim()}
+              className="w-full"
+            >
+              {isCreatingRoom ? (
+                <>
+                  <SpinnerIcon /> 
+                  <span className="ml-2">Creating...</span>
+                </>
+              ) : (
+                'Create Room'
+              )}
+            </Button>
+          </CardFooter>
+        </Card>
+      ) : (
+        <div className="max-w-4xl mx-auto space-y-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Room ID: {roomId}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {turns.map(({turn, word}, index) => (
+                  <Card key={index} className="border-l-4" style={{
+                    borderLeftColor: 
+                      turn.status === 'in_progress' ? '#22c55e' : 
+                      turn.status === 'finished' ? '#3b82f6' : 
+                      '#ef4444'
+                  }}>
+                    <CardContent className="flex items-center justify-between p-4">
+                      <div>
+                        <p className="font-medium">Turn {index + 1}</p>
+                        <p className="text-gray-500">{word.word}</p>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button
+                          size="sm"
+                          variant={turn.status === 'in_progress' ? 'default' : 'outline'}
+                          onClick={() => updateTurn(turn.id, 'in_progress', turn)}
+                          className="flex items-center"
+                        >
+                          <PlayIcon />
+                          <span className="ml-1">Start</span>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant={turn.status === 'finished' ? 'default' : 'outline'}
+                          onClick={() => updateTurn(turn.id, 'finished', turn)}
+                          className="flex items-center"
+                        >
+                          <CheckIcon />
+                          <span className="ml-1">Complete</span>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Dialog open={isAddingTurn} onOpenChange={setIsAddingTurn}>
+                <DialogTrigger asChild>
+                  <Button className="w-full flex items-center">
+                    <PlusIcon />
+                    <span className="ml-2">Add New Turn</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Add New Turn</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 pt-4">
+                    <Input
+                      type="text"
+                      placeholder="Enter word for this turn"
+                      value={newTurnWord}
+                      onChange={(e) => setNewTurnWord(e.target.value)}
+                    />
+                    <Button 
+                      className="w-full" 
+                      onClick={addNewTurn}
+                      disabled={!newTurnWord.trim()}
+                    >
+                      Add Turn
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </CardFooter>
+          </Card>
         </div>
-      </div>
-    }
-  </div>
-}
+      )}
+    </div>
+  );
+};
 
-export default Room
+export default Room;
